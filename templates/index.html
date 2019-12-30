@@ -8,41 +8,54 @@
 
 <body>
     <form method="POST" action="">
-        <button type="submit" name="reset" value="lr">RESET</button>
+        <button type="submit" name="new">New Game</button>
     </form>
-    <h1>{{game.state}}</h1>
+    <h3>Game status: {{game.state}} (turn: {{game.turns}}}</h3>
     <h3>Player turn: {{game.active.name}}</h3>
     <table style="width:50%; float:center; text-align:center">
         <tr>
             <td>Player 1: {{game.player1.name}}: {{game.player1.get_state()}}</td>
         </tr>
+        <!-- Images of hands -->
         <tr>
             <!-- Left side -->
-            <td><img src="{{url_for('static', filename=game.player1.left.count|string() + 'LDOWN.png')}}" width="64">
+            <td><img src="{{url_for('static', filename='robot_'+game.player1.left.count|string()+'L.png')}}" width="64">
             </td>
             <!-- Right side -->
-            <td><img src="{{url_for('static', filename=game.player1.right.count|string() + 'RDOWN.png')}}" width="64">
+            <td><img src="{{url_for('static', filename='robot_'+game.player1.right.count|string()+'R.png')}}"
+                    width="64">
             </td>
         </tr>
+        <!-- Attack buttons -->
         <tr>
+            <!-- Left side -->
             <td>
                 <form method="POST" action="">
-                    <button type="submit" name="attack" value="ll" {{"disabled" if game.active != game.player2}}>Attack
-                        with
-                        left</button>
-                    <button type="submit" name="attack" value="rl" {{'disabled' if game.active != game.player2}}>Attack
-                        with
-                        right</button>
+                    <button type="submit" name="attack" value="ll" {{
+                        'disabled' if game.active == game.player1 or
+                        game.player1.left.count == 0 or 
+                        game.player2.left.count == 0   
+                    }}>Attack with left</button>
+                    <button type="submit" name="attack" value="rl" {{
+                        'disabled' if game.active == game.player1 or
+                        game.player1.left.count == 0 or
+                        game.player2.right.count == 0  
+                    }}>Attack with right</button>
                 </form>
             </td>
+            <!-- Right side -->
             <td>
                 <form method="POST" action="">
-                    <button type="submit" name="attack" value="lr" {{'disabled' if game.active != game.player2}}>Attack
-                        with
-                        left</button>
-                    <button type="submit" name="attack" value="rr" {{'disabled' if game.active != game.player2}}>Attack
-                        with
-                        right</button>
+                    <button type="submit" name="attack" value="lr" {{
+                        'disabled' if game.active == game.player1 or
+                        game.player1.right.count == 0 or
+                        game.player2.left.count == 0
+                    }}>Attack with left</button>
+                    <button type="submit" name="attack" value="rr" {{
+                        'disabled' if game.active != game.player2 or
+                        game.player1.right.count == 0 or
+                        game.player2.right.count == 0                        
+                    }}>Attack with right</button>
                 </form>
             </td>
         </tr>
@@ -51,26 +64,38 @@
         </tr>
         <tr>
             <!-- Left side -->
-            <td><img src="{{url_for('static', filename=game.player2.left.count|string() + 'LUP.png')}}" width="64"></td>
+            <td><img src="{{url_for('static', filename='human_'+game.player2.left.count|string()+'L.png')}}" width="64">
+            </td>
             <!-- Right side -->
-            <td><img src="{{url_for('static', filename=game.player2.right.count|string() + 'RUP.png')}}" width="64">
+            <td><img src="{{url_for('static', filename='human_'+game.player2.right.count|string()+'R.png')}}"
+                    width="64">
             </td>
         </tr>
         <tr>
+            <!-- Left side -->
             <td>
                 <form method="POST" action="">
-                    <button type="submit" name="attack" value="ll" {{'disabled' if game.active != game.player1}}>Attack
-                        with left</button>
-                    <button type="submit" name="attack" value="rl" {{'disabled' if game.active != game.player1}}>Attack
-                        with right</button>
+                    <button type="submit" name="attack" value="ll" {{'disabled' if game.active == game.player2 or 
+                    game.player2.left.count == 0 or
+                    game.player1.left.count == 0                
+                }}>Attack with left</button>
+                    <button type="submit" name="attack" value="rl" {{'disabled' if game.active == game.player2 or
+                    game.player2.left.count == 0 or
+                    game.player1.right.count == 0
+                }}>Attack with right</button>
                 </form>
             </td>
+            <!-- Right side -->
             <td>
                 <form method="POST" action="">
-                    <button type="submit" name="attack" value="lr" {{'disabled' if game.active != game.player1}}>Attack
-                        with left</button>
-                    <button type="submit" name="attack" value="rr" {{'disabled' if game.active != game.player1}}>Attack
-                        with right</button>
+                    <button type="submit" name="attack" value="lr" {{'disabled' if game.active == game.player2 or 
+                    game.player2.right.count == 0 or
+                    game.player1.left.count == 0
+                }}>Attack with left</button>
+                    <button type="submit" name="attack" value="rr" {{'disabled' if game.active == game.player2 or 
+                    game.player2.right.count == 0 or
+                    game.player1.right.count == 0
+                }}>Attack with right</button>
                 </form>
             </td>
         </tr>

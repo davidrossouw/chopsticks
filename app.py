@@ -4,14 +4,14 @@ from model import Hand, Player, Game
 app = Flask(__name__)
 MAX_TURNS = 50
 
-player1 = Player('David')
-player2 = Player('Jill')
+player1 = Player('Robot')
+player2 = Player('You')
 game = Game(player1, player2)
 
 
 def reset_game():
-    player1 = Player('David')
-    player2 = Player('Jill')
+    player1 = Player('Robot')
+    player2 = Player('You')
     return Game(player1, player2)
 
 
@@ -28,7 +28,7 @@ def play_game():
         # switch players
         game.active, game.inactive = game.inactive, game.active
 
-    if "reset" in request.form:
+    if "new" in request.form:
         game = reset_game()
 
     if game.is_won():
